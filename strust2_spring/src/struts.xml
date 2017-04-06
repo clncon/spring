@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <!-- 
+                                          配置action，在没有与Spring整合时，class属性写的是类的全限定名。
+			当与Spring整合后，class属性写的是bean的名称。
+			注意：这个bean一定要是多例的模式（prototype）。
+		 
+     -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+   
+     <package name="test" namespace="/" extends="struts-default">
+         <action name="test" class="testAction">
+               <result>test.jsp</result>
+         </action>
+     </package>
+      
+</struts>

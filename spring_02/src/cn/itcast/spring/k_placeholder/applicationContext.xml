@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+				
+				>
+				
+				
+				
+		<!--加载外部的properties文件(方式一)，用于解析${}文件-->
+	 <!--  <context:property-placeholder location="classpath:cn/itcast/spring/k_placeholder/jdbc.properties"/>  -->
+		
+		<!-- 加载外部的properties文件(方式二),用户解析${}文件 -->
+      <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:cn/itcast/spring/k_placeholder/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+    <!-- 配置UserDao,需要注入一些配置 -->
+    <bean id="UserDao" class="cn.itcast.spring.k_placeholder.UserDaoImpl">
+          <property name="driverClass" value="${driverClass}"></property>
+          <property name="driverUrl" value="${driverUrl}"></property>
+          <property name="username" value="${username}"></property>
+          <property name="password" value="${password}"></property>
+    </bean>
+      
+</beans>

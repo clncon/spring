@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	default-lazy-init属性：用于指定所有单例的对象的默认初始化的时机。
+ -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+				
+				>
+        <bean name="UserDao" class="cn.itcast.spring.i_beanproperty_ref.UserDao">
+            <property name="datasource" value="get a datasoruce"></property>
+        </bean>
+				
+	     <!-- 配置userService，需要依赖userdao对象 -->
+        <bean name="userService" class="cn.itcast.spring.i_beanproperty_ref.UserService">
+           <property name="userdao" ref="UserDao"></property>
+        </bean>
+          
+          
+           <!-- 
+                                                            可以在property属性下使用子元素bean声明一个匿名的bean,只是给当前的对象设置用的
+                                                                这时不用指定name或者id的值，指定也是无效的
+            -->
+         <bean name="userService2" class="cn.itcast.spring.i_beanproperty_ref.UserService">
+             <property name="userdao">
+                  <bean class="cn.itcast.spring.i_beanproperty_ref.UserDao">
+                      <property name="datasource" value="a new datasource"></property>
+                  </bean>
+             </property>
+         </bean>
+          
+        
+         
+</beans>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd 
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd 
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd ">
+    
+    
+       <!-- 自动扫描与装配外部的bean -->
+         
+         <context:component-scan base-package="cn.itcast"></context:component-scan>
+         <!-- 加载外部的配置文件 -->
+         <context:property-placeholder location="classpath:jdbc.properties"/>
+         
+            <bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+            <!-- 基本的连接信息 -->
+             <property name="jdbcUrl" value="${jdbcUrl}"></property>
+             <property name="driverClass" value="${dirverClass}"></property>
+             <property name="user" value="${username}"></property>
+             <property name="password" value="${password}"></property>
+             <!-- 配置c3p0d的特殊属性 -->
+             <!-- 初始化获得3个连接，取值应该在 minPoolSize和maxPoolSize之间,default为3-->
+             <property name="initialPoolSize" value="3"></property>
+             <!--连接池中应该保留的最小的连接数，defalut为3-->
+             <property name="minPoolSize" value="3"></property>
+             <!-- 连接池中可以有的最大的连接数，default为 15 -->
+             <property name="maxPoolSize" value="5"></property>
+              <!-- 当连接池中的连接耗尽时，连接池一次可以取得的连接数，defalut为3 -->
+             <property name="acquireIncrement" value="3"></property>
+              <!-- 最大的空闲的时间，在1800秒内未使用则连接被丢弃，若为0则永不丢弃 -->
+             <property name="maxIdleTime" value="1800"></property>
+             
+        </bean>
+          
+         
+         <!-- 配置sessionFactory,方式一 :指定hibernate的主配置文件的位置-->
+            <bean id="sessionFactory1" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+               <property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
+            
+            </bean>
+            
+            <!-- 配置sessionFactory，方式二：不使用hibernate主配置文件，而是在这里写所有的hibernate配置文件-->
+            
+             <bean id="sessionFactory2" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+                 <!-- 配置数据源 -->
+                 <property name="dataSource" ref="dataSource"></property>
+                   <!-- 其他配置 -->
+                    
+                   <property name="hibernateProperties">
+                       <props>
+                           <prop key="hibernate.show_sql">true</prop>
+                           <prop key="hibernate.hbm2ddl.auto">update</prop>
+                       </props>
+                   </property>
+                   
+                    <!-- 映射配置 -->
+                      <!-- <property name="mappingResources">
+                         <list>
+                            <value>cn/itcast/spring_hibernate/entity/User.hbm.xml</value>
+                         </list>
+                      </property> -->
+                       <property name="mappingLocations">
+                           <list>
+                              <value>classpath:cn/itcast/spring_hibernate/entity/*.hbm.xml</value>
+                           </list>
+                       </property>
+             </bean>
+             
+              <!-- 配置sessionFactory,方式三:综合使用 -->
+                <bean id="sessionFactory3" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+                    <property name="dataSource" ref="dataSource"></property>
+                    <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+                       
+                  
+                </bean>
+                
+            
+</beans>

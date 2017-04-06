@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+    <!-- 配置UserDao,需要注入一些配置 -->
+    <bean id="UserDao" class="cn.itcast.spring.b_springhelloWorld.UserDaoImpl">
+          <property name="driverClass" value="com.jdbc.mysql.Driver"></property>
+          <property name="driverUrl" value="jdbc:mysql://127.0.0.1/spring1"></property>
+          <property name="username" value="root"></property>
+          <property name="password" value="root"></property>
+    </bean>
+    <bean id="UserDao2" class="cn.itcast.spring.b_springhelloWorld.UserDaoImpl">
+          <property name="driverClass" value="com.jdbc.mysql.Driver"></property>
+          <property name="driverUrl" value="jdbc:mysql://127.0.0.1/spring111"></property>
+          <property name="username" value="root22"></property>
+          <property name="password" value="root22"></property>
+    </bean>
+      
+</beans>

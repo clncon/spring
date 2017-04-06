@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	default-lazy-init属性：用于指定所有单例的对象的默认初始化的时机。
+ -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+				
+				>
+        
+     <!-- 通过属性注入的方式(setter) -->
+       <bean name="user1"  class="cn.itcast.spring.h_beanproperty.User">
+             <property name="id" value="1"></property>
+             <property name="name" value="marry"></property>
+             <property name="gender" value="false"></property>
+       </bean>
+       
+        <!-- 通过构造方法来注入 -->
+          <bean name="user2" class="cn.itcast.spring.h_beanproperty.User">
+              <constructor-arg index="0" value="2"></constructor-arg>
+              <constructor-arg index="1" value="jack"></constructor-arg>
+              <constructor-arg index="2" value="true"></constructor-arg>
+          </bean>
+        <!-- 测试属性的注入，spring可以自动的转换类型 -->
+          <bean name="user3" class="cn.itcast.spring.h_beanproperty.User">
+              <property name="id" value="1"></property>
+            <!--  <property name="name" value="marry"></property> -->
+              <!-- 使属性为空 -->
+                <property name="name">
+                   <null></null>
+                </property>
+             <property name="gender" value="false"></property>
+               <!-- Set集合，测试String -->
+             <property name="addressSet">
+                <set>
+                   <value>合肥</value>
+                   <value>天津</value>
+                   <value>上海</value>
+                </set>
+             </property>
+             
+               <!-- Set如果指定为强类型，如(Set<Integer>) 
+                                                                        ，则配置时不需要指定type属性,spring能自动转换 
+                                                                    如果没有指定type,则默认作为String来处理,此时应指定type属性，让spring来转换-->
+             <property name="numberSet">
+                <set>
+                   <value type="java.lang.Integer">1</value>
+                   <value type="java.lang.Integer">3</value>
+                   <value type="java.lang.Integer">5</value>
+                </set>
+             </property>
+               <!-- list集合 -->
+              <property name="addressList">
+                  <list>
+                     <value>安徽</value>
+                     <value>湖南</value>
+                     <value>云南</value>
+                  </list>
+              </property>
+                 <!-- Array配置和list的配置一样 -->
+                <property name="addressArray">
+                   <list>
+                       <value>广东</value>
+                       <value>福建</value>
+                       <value>浙江</value>
+                   </list>
+                </property>
+               <!-- map集合 -->
+               <property name="addressMap">
+                   <map>
+                      <entry key="1" value="中国"></entry>
+                      <entry key="2" value="俄罗斯"></entry>
+                      <entry key="3" value="美国"></entry>
+                  </map> 
+              </property>
+               <!-- Properties配置 -->
+                 <property name="props">
+                    <props>
+                       <prop key="pageszie">10</prop>
+                       <prop key="maxFileSize">1000</prop>
+                    </props>
+                 </property>
+          </bean>
+         <!-- 配置dao,如果一个bean只是为了抽取多个bean的公共的配置，则加上abstract="true" 这时不需要再写class属性-->
+         <bean name="baseDao" abstract="true">
+            <property name="datasource" value="datasource1"></property>
+         </bean>
+                     <!-- 在其他bean中，可以指定parent属性，表示要从哪个父bean继承过来一些公共的配置 --> 
+         <bean name="UserDao" parent="baseDao" class="cn.itcast.spring.h_beanproperty.UserDao"></bean>
+         <bean name="RoleDao" parent="baseDao" class="cn.itcast.spring.h_beanproperty.RoleDao"></bean>
+</beans>

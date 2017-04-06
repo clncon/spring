@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+    
+    
+    <!-- 直接指定类的全名，将会使用反射的方式来创建实例对象 -->
+    <bean id="UserDao" class="cn.itcast.spring.b_springhelloWorld.UserDaoImpl">
+          <property name="driverClass" value="com.jdbc.mysql.Driver"></property>
+          <property name="driverUrl" value="jdbc:mysql://127.0.0.1/spring1"></property>
+          <property name="username" value="root"></property>
+          <property name="password" value="root"></property>
+    </bean>
+      <!-- 使用静态工厂的方式来创建实例对象 -->
+     <bean id="UserDao2" class="cn.itcast.spring.e_beanInstance.StaticDaoFactory"
+        factory-method="createUserDaoInstance">
+          <property name="driverClass" value="com.jdbc.mysql.Driver"></property>
+          <property name="driverUrl" value="jdbc:mysql://127.0.0.1/spring1"></property>
+          <property name="username" value="root"></property>
+          <property name="password" value="root"></property>
+    </bean>
+       <!-- 使用非静态的工厂来创建实例 -->
+         <!-- 先生成工厂对象的实例 -->
+        <bean id="DaoFactory" class="cn.itcast.spring.e_beanInstance.BeanFactory"></bean>
+         <!-- 使用指定的工厂实例和方法来创建对象实例 -->
+         <bean id="UserDao3" factory-bean="DaoFactory" factory-method="createUserDao"></bean>
+</beans>

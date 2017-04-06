@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd 
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd 
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd ">
+    
+    
+       <!--自动扫描与装配beans -->     
+        <context:component-scan base-package="cn.itcast.spring_03.q_tx"></context:component-scan>
+
+        <!-- 配置外部文件 -->
+          <context:property-placeholder location="classpath:cn/itcast/spring_03/p_jdbc/jdbc.properties"/>
+          
+        <bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+            <!-- 基本的连接信息 -->
+             <property name="jdbcUrl" value="${jdbcUrl}"></property>
+             <property name="driverClass" value="${dirverClass}"></property>
+             <property name="user" value="${username}"></property>
+             <property name="password" value="${password}"></property>
+             <!-- 配置c3p0d的特殊属性 -->
+             <!-- 初始化获得3个连接，取值应该在 minPoolSize和maxPoolSize之间,default为3-->
+             <property name="initialPoolSize" value="3"></property>
+             <!--连接池中应该保留的最小的连接数，defalut为3-->
+             <property name="minPoolSize" value="3"></property>
+             <!-- 连接池中可以有的最大的连接数，default为 15 -->
+             <property name="maxPoolSize" value="5"></property>
+              <!-- 当连接池中的连接耗尽时，连接池一次可以取得的连接数，defalut为3 -->
+             <property name="acquireIncrement" value="3"></property>
+              <!-- 最大的空闲的时间，在1800秒内未使用则连接被丢弃，若为0则永不丢弃 -->
+             <property name="maxIdleTime" value="1800"></property>
+             
+        </bean>
+        
+           <!--配置JdbcTemplate -->
+          <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+              <property name="dataSource" ref="dataSource"></property>
+          
+          </bean>
+          
+          
+              <!--三， 配置声明式事物管理 -->
+              
+               <!-- 声明'事物管理器' -->
+               <bean id="dsTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                  <property name="dataSource" ref="dataSource"></property>
+               </bean>
+               
+               
+                <!-- =====基于注解的方式来配置事务======= -->
+                  <tx:annotation-driven transaction-manager="dsTransactionManager"/>
+               
+               
+               
+               
+</beans>
